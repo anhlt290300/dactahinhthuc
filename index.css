@@ -1,0 +1,23 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+
+}
+
+.output-text{
+    width: 50vw;
+    height: 100vh;
+    border: 1px solid black;
+    overflow:scroll;
+}
+
+.input-text{
+    width: 50vw;
+    height: 80vh;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
