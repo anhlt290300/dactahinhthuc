@@ -21,3 +21,32 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+tab{
+    margin-left: 2rem;
+    display: inline-block;
+}
+
+p{
+    margin:7px 0;
+}
+
+yellow{
+    color: #CD853F
+}
+
+blue{
+    color: blue;
+}
+
+green{
+    color: green;
+}
+
+red{
+    color:#FF1493
+}
+
+span{
+    color: blue;
+}

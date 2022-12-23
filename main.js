@@ -1,5 +1,4 @@
 
-
 function normalize(line) {
     var _line = line.replace(/\s+/g, '');
     return _line
@@ -79,7 +78,7 @@ input_file.onchange = function () {
 
         let key = 'c++'
 
-        output_text.innerText = build_slution(key)
+        output_text.innerHTML = build_slution(key)
         //  + Main_('c++')
 
     }
@@ -125,14 +124,14 @@ function Nhap_(key) {
         //// check nhap theo mang hay bth
         if (isArr) {
             if (i > 0) {
-                string_ += varible_[i].properties + " " + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> <yellow>&</yellow>${varible_[i].name_varible}`
                 string_method += varible_[i].name_varible
             } else {
-                string_ += varible_[i].properties + varible_[i].name_varible
-                string_method += "*" + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
+                string_method += varible_[i].name_varible
             }
         } else {
-            string_ += varible_[i].properties + " &" + varible_[i].name_varible
+            string_ += `<red>${varible_[i].properties}</red> <yellow>&</yellow>${varible_[i].name_varible}`
             string_method += varible_[i].name_varible
         }
 
@@ -142,15 +141,18 @@ function Nhap_(key) {
     let string_content = ''
 
     if (isArr) {
-        string_content += `for(int i=0;i<${varible_[1].name_varible};i++){\ncout<<"Nhap phan tu thu "<<i+1;\ncin>>${varible_[0].name_varible}[i];`
+        string_content += `<p><tab></tab><tab></tab>cout <yellow><<</yellow> <green>"Nhap n: "</green>;</p>
+                           <p><tab></tab><tab></tab>cin <yellow>>></yellow> n;</p>`;
+        string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < n; i++){</p><p><tab></tab><tab></tab>cout<yellow><<</yellow><green>"Nhap phan tu thu "</green><< i+1 << <green>": "</green>;</p><p><tab></tab><tab></tab>cin<yellow>>></yellow>${varible_[0].name_varible}[i];<br><tab></tab><tab></tab>}</p>
+        `
     } else {
         for (i = 0; i < varible_.length; i++) {
 
-            string_content += '\t\tcout << " nhap ' + varible_[i].name_varible + ' ";\n'
-            string_content += 'cin >> ' + varible_[i].name_varible + ' ;'
+            string_content += `<p><tab></tab><tab></tab>cout <yellow><<</yellow> <green>"nhap ${varible_[i].name_varible}"</green> ;</p>`
+            string_content += `<p><tab></tab><tab></tab>cin <yellow>>></yellow> ${varible_[i].name_varible};</p>`
 
             if (i < varible_.length - 1) {
-                string_content += "\n"
+                string_content += ""
             }
         }
 
@@ -161,7 +163,7 @@ function Nhap_(key) {
         name_method_nhap += `Nhap_${name_}(${string_method})`
 
         return `
-            public: void Nhap_${name_}(${string_}) \n{\n\t${string_content}\n }
+            <p><tab></tab>public: <red>void</red> Nhap_${name_}(${string_}) {<br/>${string_content} <tab></tab>}</p>
         `
     }
     else if (key === 'python') {
@@ -178,10 +180,10 @@ function Xuat_(key) {
 
     let string_ = ''
 
-    string_ += result_[0].properties + " " + result_[0].name_result
+    string_ += `<red>${result_[0].properties}</red> ${result_[0].name_result}`
 
 
-    let string_content = 'cout<< "Ket qua la " << '
+    let string_content = '<tab></tab><tab></tab>cout <yellow><<</yellow> <green>"Ket qua la "</green> <yellow><<</yellow> '
 
 
 
@@ -189,7 +191,7 @@ function Xuat_(key) {
     if (key === 'c++') {
         name_method_xuat += `Xuat_${name_}(${string_method})`
         return `
-            public: void Xuat_${name_}(${string_}) \n{\n\t${string_content} ${result_[0].name_result} ;\n }
+            <p><tab></tab>public: <red>void</red> Xuat_${name_}(${string_}) {<br/><p>${string_content} ${result_[0].name_result} ;<br/></p><tab></tab>}</p>
         `
     }
     else if (key === 'python') {
@@ -216,15 +218,15 @@ function Kiemtra_(key) {
 
         if (isArr) {
             if (i > 0) {
-                string_ += varible_[i].properties + " " + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
                 string_method += varible_[i].name_varible
             } else {
-                string_ += varible_[i].properties + varible_[i].name_varible
-                string_method += "*" + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
+                string_method += varible_[i].name_varible
             }
 
         } else {
-            string_ += varible_[i].properties + " " + varible_[i].name_varible
+            string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
             string_method += varible_[i].name_varible
         }
     }
@@ -232,7 +234,7 @@ function Kiemtra_(key) {
     var string_content = ''
 
     if (pre === '') {
-        string_content += 'return 1;'
+        string_content += '<br/><p><tab></tab><tab></tab><yellow>return</yellow> 1;</p>'
     } else {
 
         arr = pre.split('||')
@@ -246,12 +248,12 @@ function Kiemtra_(key) {
 
         for (i = 0; i < arr.length; i++) {
 
-            string_content += `if(${arr[i]}) \n{\nreturn 1;\n}\n`
+            string_content += `<br/><p><tab></tab><tab></tab>if(${arr[i]}){<br/><tab></tab><tab></tab><tab></tab><yellow>return</yellow> 1;<br><tab></tab><tab></tab>}</p>`
 
 
         }
 
-        string_content += `else{\nreturn 0;\n}`
+        string_content += `<p><tab></tab><tab></tab>else{<br/><tab></tab><tab></tab><tab></tab><yellow>return</yellow> 0;<br><tab></tab><tab></tab>}</p>`
     }
 
 
@@ -260,7 +262,7 @@ function Kiemtra_(key) {
     if (key === 'c++') {
         name_method_kiemtra += `Kiemtra_${name_}(${string_method})`
         return `
-            public: int Kiemtra_${name_}(${string_}) \n{\n\t${string_content} \n }
+            <p><tab></tab>public: <red>int</red> Kiemtra_${name_}(${string_}) {${string_content} <tab></tab>}</p>
         `
     }
     else if (key === 'python') {
@@ -291,15 +293,15 @@ function Xuli_(key) {
 
         if (isArr) {
             if (i > 0) {
-                string_ += varible_[i].properties + " " + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
                 string_method += varible_[i].name_varible
             } else {
-                string_ += varible_[i].properties + varible_[i].name_varible
-                string_method += "*" + varible_[i].name_varible
+                string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
+                string_method += varible_[i].name_varible
             }
 
         } else {
-            string_ += varible_[i].properties + " " + varible_[i].name_varible
+            string_ += `<red>${varible_[i].properties}</red> ${varible_[i].name_varible}`
             string_method += varible_[i].name_varible
         }
     }
@@ -313,7 +315,52 @@ function Xuli_(key) {
         //// tach post ra thanh mang
         if (post === '') {
             string_content += ''
-        } else {
+        } 
+        else if (['VM', 'TT'].some( ai => post.includes(ai) )) {
+            const newPost = post.substring(0, post.length - 1).replaceAll('..', 'to').replace('kq=(', '');
+
+            const stringConditions = newPost.split('.');
+            string_content += `<p><tab></tab><tab></tab><red>bool</red> result = false;</p>`;
+            string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < ${varible_[1].name_varible}; i++) {</p>`;
+            let closeBrackets = stringConditions.length;
+            stringConditions.forEach((condition, index) => {
+                const conditions = (condition.slice(condition.indexOf('{') + 1, condition.lastIndexOf('}'))).split('to');
+                if(index > 0 && index < stringConditions.length - 1) {
+                    string_content += `<p><tab></tab><tab></tab><tab></tab><tab></tab><red>int</red> ${condition[2]} = ${conditions[0]};<br><tab></tab><tab></tab><tab></tab>}</p>`;
+                }
+                if(condition.includes('VM')){
+                    string_content += `
+                    <p><tab></tab><tab></tab><tab></tab>if(${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                } else if(stringConditions[0].includes('VM') && condition.includes('TT')) {
+                    string_content += `
+                    <p><tab></tab><tab></tab><tab></tab>for(${condition[2]}; ${condition[2]} <  ${varible_[1].name_varible}; ${condition[2]}++) {
+                        if(${condition[2]} >= ${conditions[0]} && ${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                    closeBrackets++;
+                } else if(condition.includes('TT')){
+                    string_content += `
+                    <p><tab></tab><tab></tab><tab></tab>if(${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                }
+                else {
+                    string_content += `<p><tab></tab><tab></tab><tab></tab><tab></tab>if( ${condition.replaceAll('(', '[').replaceAll(')', ']')} ) {<br><tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>
+                        result = true;
+                    <br><tab></tab><tab></tab><tab></tab><tab></tab>}</p>
+                    `;
+                    if(stringConditions[0].includes('VM')) {
+                        string_content += `
+                        <p><tab></tab><tab></tab><tab></tab><tab></tab>else {<br>
+                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>result = false;<br>
+                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>if (${condition[condition.length - 2]} == ${varible_[1].name_varible} - 1) {<br>
+                                <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>return false;<br>
+                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>}<br>
+                            <tab></tab><tab></tab><tab></tab><tab></tab>}</p>
+                        `;
+                    };
+                }
+            });
+            const closeBracket = `<p><tab></tab><tab></tab><tab></tab>}</p><p><tab></tab><tab></tab>}</p>`
+            string_content += `${closeBracket}<p><tab></tab><tab></tab>return result;</p>`;
+        }
+        else {
 
             arr = post.split('||')
 
@@ -322,16 +369,15 @@ function Xuli_(key) {
 
                 arr[i] = flag.slice(flag.indexOf('(') + 1, flag.lastIndexOf(')'))
             }
-            //console.log(arr)
             //// khai bao bien kq
             let value = (result_[0].properties === 'float') ? '0' : ((result_[0].properties === 'bool') ? 'false' : '""')
-            string_content += result_[0].properties + " " + result_[0].name_result + " = " + value + ';\n'
+            string_content += `<p><tab></tab><tab></tab><red>${result_[0].properties}</red> ${result_[0].name_result} = ${value};</p>`
 
             //// tach phan tu trong mang va xu li
             for (i = 0; i < arr.length; i++) {
-                let flag = []
+                let flag = [];
 
-                let flag_ = []
+                let flag_ = [];
 
                 if (check__condition(arr[i])) {
                     flag[0] = arr[i].slice(0, arr[i].indexOf("&"))
@@ -340,13 +386,10 @@ function Xuli_(key) {
                     flag[0] = arr[i]
                 }
 
-                console.log(flag[1])
-                console.log(flag[0])
 
                 if (flag[0][0] == "(")
                     flag[0] = flag[0].slice(flag[0].indexOf('(') + 1, flag[0].lastIndexOf(')'))
 
-                console.log(flag[0])
                 //// chuan hoa cac toan tu trong if
                 //// kiem tra xem co ton tai dieu kien trong if k
                 if (flag[1] != undefined) {
@@ -358,15 +401,15 @@ function Xuli_(key) {
 
 
                 if (flag[1] != undefined) {
-                    string_content += `if( ${flag_[1]} )\n{\n${flag_[0]} ;\n}\n`
+                    string_content += `<p><tab></tab><tab></tab><yellow>if</yellow>( ${flag_[1]} ){<br><tab></tab><tab></tab><tab></tab>${flag_[0]} ;<br><tab></tab><tab></tab>}</p>`
                 } else {
-                    string_content += `${flag_[0]} ;\n`
+                    string_content += `<p><tab></tab><tab></tab>${flag_[0]} ;</p>`
                 }
             }
 
             ///// return kq
 
-            string_content += `return ${result_[0].name_result};\n`
+            string_content += `<p><tab></tab><tab></tab><yellow>return</yellow> ${result_[0].name_result};</p>`
         }
     }
 
@@ -374,7 +417,7 @@ function Xuli_(key) {
     if (key === 'c++') {
         name_method_xuli += `${name_}(${string_method})`
         return `
-            public: ${result_[0].properties} ${name_}(${string_}) \n{\n${string_content} }
+            <p><tab></tab>public: <red>${result_[0].properties}</red> ${name_}(${string_}) {${string_content} <tab></tab>}</p>
         `
     }
     else if (key === 'python') {
@@ -390,28 +433,29 @@ function Main_(key) {
     //// khoi tao cac bien
     for (i = 0; i < varible_.length; i++) {
 
-        let value = (varible_[i].properties === "int" || varible_[i].properties === "float") ? '0' : (varible_[i].properties === "bool") ? 'true' : ''
-        string_ += `${varible_[i].properties} ${varible_[i].name_varible} = ${value} ;\n `
+        let value = (varible_[i].properties === "int" || varible_[i].properties === "float") ? '0' : (varible_[i].properties === "bool") ? 'true' : '';
+        
+        string_ += `<p><tab><red>${varible_[i].properties}</red> ${varible_[i].name_varible} ${varible_[i].properties.includes('*') ? '' : ' = ' + value} ;</p> `
     }
     let value = (result_[0].properties === "int" || result_[0].properties === "float") ? '0' : (result_[0].properties === "bool") ? 'true' : '""'
-    string_ += `${result_[0].properties} ${result_[0].name_result} = ${value} ;\n `
+    string_ += `<p><tab><red>${result_[0].properties}</red> ${result_[0].name_result} = ${value} ;</p> `
 
     //// khoi tao ctr
-    string_ += `${name_class} ctr;\n\n`
+    string_ += `<p><tab><red>${name_class}</red> ctr;</p>`
 
 
     //// nhap 
 
-    string_ += `ctr.${name_method_nhap};\n\n`
+    string_ += `<p><tab>ctr.${name_method_nhap};</p>`
 
     //// kiem tra va xuat
 
-    string_ += `if( ctr.${name_method_kiemtra} == 1 )\n{\n${result_[0].name_result} = ctr.${name_method_xuli};\n\nctr.${name_method_xuat};\n\n}\nelse{\ncout << "thong tin nhap khong hop le";`
+    string_ += `<p><tab><yellow>if</yellow>( ctr.${name_method_kiemtra} == 1 ){<br><tab></tab>${result_[0].name_result} = ctr.${name_method_xuli};<br><tab></tab>ctr.${name_method_xuat};<br>}<yellow>else</yellow>{<br><tab></tab>cout <yellow><<</yellow> <green>"thong tin nhap khong hop le"</green>;</p>`
 
 
     if (key === 'c++') {
         return `            
-            int main(){\n\n ${string_} \n }
+            <p><red>int</red> main(){ ${string_}  <tab></tab>}</p>
         `
     }
     else if (key === 'python') {
@@ -458,21 +502,21 @@ function build_slution(key) {
                     flag = true
             }
             if (flag) {
-                include_string += '#include <string.h>'
+                include_string += '<p><gray>#include</gray> <span><</span><blue>string.h</blue><span>></span>;</p>'
             }
         }
 
         //// THem thu vien
-        content_ += `#include <iostream>` + ((flag) ? `\n${include_string}\n\n` : '\n') + `using namespace std;\n\n`
+        content_ += `<p><yellow>#include</yellow> <span><</span><blue>iostream</blue><span>></span>;</p>` + ((flag) ? `${include_string}` : '') + `<p><yellow>using namespace</yellow> std;</p>`
 
         //// tao class
-        let class_ = `class ${name_class}{` + Nhap_(key) + Xuat_(key) + Kiemtra_(key) + Xuli_(key) + `};\n`
+        let class_ = `class ${name_class}{<br>` + Nhap_(key) + Xuat_(key) + Kiemtra_(key) + Xuli_(key) + `};`
 
         content_ += class_
 
         //// tao ham main
 
-        content_ += Main_(key) + `\n return 0;\n}`
+        content_ += Main_(key) + `<p><tab></tab><yellow>return</yellow> 0;<br>}</p>`
 
     }
     else if (key === 'python') {
@@ -591,4 +635,3 @@ function check__condition(line) {
         return false
     }
 }
-
