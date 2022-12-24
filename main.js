@@ -1,4 +1,3 @@
-
 function normalize(line) {
     var _line = line.replace(/\s+/g, '');
     return _line
@@ -318,47 +317,73 @@ function Xuli_(key) {
         } 
         else if (['VM', 'TT'].some( ai => post.includes(ai) )) {
             const newPost = post.substring(0, post.length - 1).replaceAll('..', 'to').replace('kq=(', '');
-
+            let finalResultName = 'result';
             const stringConditions = newPost.split('.');
-            string_content += `<p><tab></tab><tab></tab><red>bool</red> result = false;</p>`;
-            string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < ${varible_[1].name_varible}; i++) {</p>`;
-            let closeBrackets = stringConditions.length;
+            // string_content += `<p><tab></tab><tab></tab><red>bool</red> result = false;</p>`;
+            // string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < ${varible_[1].name_varible} - 1; i++) {</p>`;
+            let closeBrackets = 1;
             stringConditions.forEach((condition, index) => {
                 const conditions = (condition.slice(condition.indexOf('{') + 1, condition.lastIndexOf('}'))).split('to');
                 if(index > 0 && index < stringConditions.length - 1) {
-                    string_content += `<p><tab></tab><tab></tab><tab></tab><tab></tab><red>int</red> ${condition[2]} = ${conditions[0]};<br><tab></tab><tab></tab><tab></tab>}</p>`;
+                    // string_content += `<p><tab></tab><tab></tab><tab></tab><tab></tab><red>int</red> ${condition[2]} = ${conditions[0]};<br><tab></tab><tab></tab><tab></tab>}</p>`;
                 }
                 if(condition.includes('VM')){
-                    string_content += `
-                    <p><tab></tab><tab></tab><tab></tab>if(${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                    string_content += `<p><tab></tab><tab></tab><red>bool</red> ${finalResultName} = true;</p>`;
+                    string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < ${varible_[1].name_varible} - 1; i++) {</p>`;
                 } else if(stringConditions[0].includes('VM') && condition.includes('TT')) {
+                    
+                    string_content += `<p><tab></tab><tab></tab><red>bool</red> resultTT = false;</p>`;
+                    finalResultName = 'resultTT';
+                    const iPushOne = condition[6] + condition[7] + condition[8];
                     string_content += `
-                    <p><tab></tab><tab></tab><tab></tab>for(${condition[2]}; ${condition[2]} <  ${varible_[1].name_varible}; ${condition[2]}++) {
-                        if(${condition[2]} >= ${conditions[0]} && ${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                    <p><tab></tab><tab></tab><tab></tab>for(<red>int</red> ${condition[2]} = ${iPushOne}; ${condition[2]} <  ${varible_[1].name_varible}; ${condition[2]}++) {`;
                     closeBrackets++;
                 } else if(condition.includes('TT')){
-                    string_content += `
-                    <p><tab></tab><tab></tab><tab></tab>if(${condition[2]} <= ${conditions[1]} -1 ) {</p>`;
+                    if(index) {
+                        // string_content += `<p><tab></tab><tab></tab><red>bool</red> result_${index} = false;</p>`;
+                        string_content += `<p><tab/><tab></tab><tab></tab>for(<red>int</red> j = i + 1; j < ${varible_[1].name_varible}; j++) {</p>`;
+                        closeBrackets++;
+                    }
+                    else {
+                        string_content += `<p><tab></tab><tab></tab><red>bool</red> ${finalResultName} = false;</p>`;
+                        string_content += `<p><tab></tab><tab></tab>for(<red>int</red> i = 0; i < ${varible_[1].name_varible} - 1; i++) {</p>`;
+                    }
                 }
                 else {
-                    string_content += `<p><tab></tab><tab></tab><tab></tab><tab></tab>if( ${condition.replaceAll('(', '[').replaceAll(')', ']')} ) {<br><tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>
-                        result = true;
-                    <br><tab></tab><tab></tab><tab></tab><tab></tab>}</p>
+                    string_content += `<p><tab></tab><tab></tab><tab></tab>if( ${condition.replaceAll('(', '[').replaceAll(')', ']')} ) {
+                        ${stringConditions[1].includes('TT') ? `<br><tab></tab><tab></tab><tab></tab><tab></tab>${finalResultName} = true;` : ''}
+                        <br><tab></tab><tab></tab><tab></tab>}</p>
                     `;
-                    if(stringConditions[0].includes('VM')) {
+                    finalResultName = 'result';
+                    if(stringConditions[0].includes('VM') && stringConditions.length < 3) {
                         string_content += `
-                        <p><tab></tab><tab></tab><tab></tab><tab></tab>else {<br>
-                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>result = false;<br>
-                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>if (${condition[condition.length - 2]} == ${varible_[1].name_varible} - 1) {<br>
-                                <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>return false;<br>
-                            <tab></tab><tab></tab><tab></tab><tab></tab><tab></tab>}<br>
-                            <tab></tab><tab></tab><tab></tab><tab></tab>}</p>
+                        <p><tab></tab><tab></tab><tab></tab>else {
+                            <br><tab/><tab></tab><tab></tab><tab></tab>${finalResultName} = false;
+                            <br><tab></tab><tab></tab>}</p>
                         `;
-                    };
+                        if(stringConditions[1].includes('TT')) {
+                            string_content += `
+                            if(resultTT == false) {
+                                result = false;
+                            }
+                        }
+                            `;
+                        }
+                    }
+                    else if(stringConditions[0].includes('VM') && stringConditions[1].includes('TT')) {
+                        //test 8
+                        closeBrackets--;
+                        string_content += `
+                            <p><tab/><tab></tab><tab></tab>}</p>
+                            <p><tab/><tab></tab><tab></tab>if(resultTT == false) {</p>
+                                <p><tab/><tab/><tab></tab><tab></tab>result = false;</p>
+                            <p><tab/><tab></tab><tab></tab>}</p>
+                        `;
+                    }
                 }
             });
-            const closeBracket = `<p><tab></tab><tab></tab><tab></tab>}</p><p><tab></tab><tab></tab>}</p>`
-            string_content += `${closeBracket}<p><tab></tab><tab></tab>return result;</p>`;
+            const closeBracket = `<p><tab></tab><tab></tab>}</p>`;
+            string_content += `${closeBracket.repeat(closeBrackets)}<p><tab></tab><tab></tab>return ${finalResultName};</p>`;
         }
         else {
 
